@@ -1,5 +1,5 @@
 require './c2mAPI'
-c2m = C2MAPIRest.new("username","password","0")
+c2m = C2MAPIRest.new("username","mlavannis","0") # set 0 for stage, 1 for production
 c2m.addAddress("<First_name>John</First_name>
 			  <Last_name>Doe</Last_name>
 			  <Organization>My Business</Organization>
@@ -21,7 +21,6 @@ c2m.addAddress("<First_name>John2</First_name>
 			  <Zip>12345</Zip>
 			  <Country_non-US></Country_non-US>")
 po = PrintOptions.new("Letter 8.5 x 11","Address on Separate Page","Next Day","#10 Double Window","Black and White","White 24#","Printing Both sides","First Class")
-#print po.documentClass
 response = c2m.runAll("./test.pdf","MyFile",po,"2")
 #print response.body
 xml_doc  = Nokogiri::XML(response.body)

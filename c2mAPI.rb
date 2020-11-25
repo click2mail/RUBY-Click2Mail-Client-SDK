@@ -92,7 +92,7 @@ class C2MAPIRest
 		url = getRestURL()
 		uri = URI.parse(url + "/molpro/jobs")
 		request =  Net::HTTP::Post.new( uri)
-		form_data = URI.encode_www_form(:documentClass=> @po.documentClass,:layout =>@po.layout,:productionTime => @po.productionTime,:envelope => @po.envelope,:color =>@po.color,:paperType =>@po.paperType,:printOption=> @po.printOption,:documentId => @documentId,:addressId => @addressListId)
+		form_data = URI.encode_www_form(:documentClass=> @po.documentClass,:layout =>@po.layout,:productionTime => @po.productionTime,:envelope => @po.envelope,:color =>@po.color,:paperType =>@po.paperType,:printOption=> @po.printOption,:mailClass=>@po.mailClass,:documentId => @documentId,:addressId => @addressListId)
 		request.body = form_data	
 		#end
 		request.basic_auth(@username, @pw)
