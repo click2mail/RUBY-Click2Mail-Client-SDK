@@ -1,5 +1,5 @@
 require './c2mAPI'
-c2m = C2MAPIRest.new("username","mlavannis","0") # set 0 for stage, 1 for production
+c2m = C2MAPIRest.new("username","password","0") # set 0 for stage, 1 for production
 c2m.addAddress("<First_name>John</First_name>
 			  <Last_name>Doe</Last_name>
 			  <Organization>My Business</Organization>
