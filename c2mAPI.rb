@@ -3,6 +3,8 @@ require 'uri'
 require 'nokogiri'
 require 'net/http/post/multipart'
 require 'open-uri'
+require 'zip' # gem install rubyzip
+
 class C2MAPIRest
  attr_accessor :mode,:jobId,:documentId,:addressListId
 	def initialize(username,pw,mode)
@@ -162,6 +164,38 @@ class C2MAPIRest
 		#print "\n\n"
 		#print "\n\n"
 	end
+	def jobReturnReceiptZip(file, destination)
+                url = getRestURL()
+                uri = URI.parse(url + "/molpro/jobs/#@jobId/returnReceipt")
+                request =  Net::HTTP::Get.new( uri)
+                request.basic_auth(@username, @pw)
+                
+		req_options = {
+                 use_ssl: uri.scheme == "https",
+                }
+                
+		response = Net::HTTP.start(uri.hostname, uri.port, req_options) do |http|
+                  http.request(request) do |response|
+		  			FileUtils.mkdir_p(destination)
+    		    	open(destination + file, 'w') do |file|
+                      response.read_body do |chunk|
+                        file.write(chunk)
+                      end
+                    end
+                  end
+                end
+                return  response
+	end
+	def extract_zip(file, destination)
+  		FileUtils.mkdir_p(destination)
+
+  		Zip::File.open(file) do |zip_file|
+    		zip_file.each do |f|
+      			fpath = File.join(destination, f.name)
+      			zip_file.extract(f, fpath) unless File.exist?(fpath)
+    		end
+  		end
+	end	
 	def runAll(filepath,filename,printoptions,addressmappingId)
 		string = ('a'..'z').to_a.shuffle[0,8].join
 		print "Creating Document\n\n"
